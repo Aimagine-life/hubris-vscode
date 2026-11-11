@@ -39,7 +39,9 @@
 	},
 	"l10n": "./l10n",
 	"main": "./out/extension.js",
-	"activationEvents": [],
+	"activationEvents": [
+		"onStartupFinished"
+	],
 	"contributes": {
 		"languageModelChatProviders": [
 			{
