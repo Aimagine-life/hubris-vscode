@@ -130,18 +130,20 @@ export interface SignInPages {
 }
 
 /**
- * Runs the whole browser sign-in: registers a client, waits for the redirect on a local port,
+ * Runs the whole browser sign-in: registers a client if needed, waits for the redirect on a local port,
  * exchanges the code. `open` shows the consent page; `signal` cancels the wait.
  */
 export async function signIn(opts: {
 	origin: string;
+	/** A registration from an earlier sign-in; without it a new one is made. */
+	clientId?: string;
 	clientName: string;
 	open: (url: string) => Promise<void>;
 	signal: AbortSignal;
 	pages: SignInPages;
 	timeoutMs?: number;
 }): Promise<OAuthTokens> {
-	const clientId = await registerClient(opts.origin, opts.clientName);
+	const clientId = opts.clientId ?? (await registerClient(opts.origin, opts.clientName));
 	const { verifier, challenge } = createPkce();
 	const state = b64url(randomBytes(16));
 

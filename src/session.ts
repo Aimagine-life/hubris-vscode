@@ -17,7 +17,10 @@ export class HubrisSession implements vscode.Disposable {
 	private refreshing: Promise<string | undefined> | undefined;
 	private readonly sub: vscode.Disposable;
 
-	constructor(private readonly secrets: vscode.SecretStorage) {
+	constructor(
+		private readonly secrets: vscode.SecretStorage,
+		private readonly state: vscode.Memento,
+	) {
 		this.sub = secrets.onDidChange((e) => {
 			if (e.key === KEY_SECRET || e.key === OAUTH_SECRET) this.changed.fire();
 		});
@@ -48,6 +51,15 @@ export class HubrisSession implements vscode.Disposable {
 		const oauth = await this.readOAuth();
 		if (oauth) return needsRefresh(oauth) ? this.refresh(oauth) : oauth.accessToken;
 		return (await this.secrets.get(KEY_SECRET)) || process.env.HUBRIS_API_KEY?.trim() || undefined;
+	}
+
+	/** The app registration made at the first sign-in; reused so each install registers once. */
+	knownClientId(): string | undefined {
+		return this.state.get<string>(`hubris.oauthClient:${this.origin()}`);
+	}
+
+	async rememberClientId(id: string | undefined): Promise<void> {
+		await this.state.update(`hubris.oauthClient:${this.origin()}`, id);
 	}
 
 	async saveOAuth(t: OAuthTokens): Promise<void> {

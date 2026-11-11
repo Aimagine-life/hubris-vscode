@@ -102,6 +102,25 @@ test('signs in: registers a loopback client and exchanges the code with the veri
 	}
 });
 
+test('reuses a saved registration instead of registering again', async () => {
+	const hub = await fakeHubris();
+	try {
+		const tokens = await signIn({
+			origin: hub.origin,
+			clientId: 'cid-saved',
+			clientName: 'VS Code',
+			open: approve(),
+			signal: new AbortController().signal,
+			pages,
+		});
+		assert.equal(hub.seen.registration, undefined);
+		assert.equal(hub.seen.token?.get('client_id'), 'cid-saved');
+		assert.equal(tokens.clientId, 'cid-saved');
+	} finally {
+		hub.close();
+	}
+});
+
 test('rejects when the user denies access', async () => {
 	const hub = await fakeHubris();
 	try {

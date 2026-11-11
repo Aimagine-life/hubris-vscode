@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext): void {
 	const version = (context.extension.packageJSON as { version?: string }).version ?? 'unknown';
 	const userAgent = `hubris-vscode/${version} VSCode/${vscode.version}`;
 
-	const session = new HubrisSession(context.secrets);
+	const session = new HubrisSession(context.secrets, context.globalState);
 	const provider = new HubrisChatProvider(session, userAgent, () => connect(session));
 	const status = new BalanceStatus(session, userAgent);
 
@@ -73,6 +73,7 @@ async function browserSignIn(session: HubrisSession): Promise<boolean> {
 				cancel.onCancellationRequested(() => abort.abort());
 				return signIn({
 					origin: session.origin(),
+					clientId: session.knownClientId(),
 					clientName: `VS Code (${vscode.env.appName})`,
 					open: async (url) => {
 						// openExternal hands the browser the decoded query; it still parses, because
@@ -89,11 +90,14 @@ async function browserSignIn(session: HubrisSession): Promise<boolean> {
 				});
 			},
 		);
+		await session.rememberClientId(tokens.clientId);
 		await session.saveOAuth(tokens);
 		offerModelPicker(vscode.l10n.t('Hubris is connected.'));
 		return true;
 	} catch (err) {
 		if (err instanceof OAuthError && err.code === 'cancelled') return false;
+		// Hubris no longer knows the saved registration: the next attempt registers again.
+		if (err instanceof OAuthError && err.code === 'invalid_client') await session.rememberClientId(undefined);
 		const message = err instanceof Error ? err.message : String(err);
 		const pick = await vscode.window.showErrorMessage(
 			vscode.l10n.t('Hubris: sign-in failed. {0}', message),
