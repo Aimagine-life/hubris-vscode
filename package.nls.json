@@ -1,0 +1,10 @@
+{
+	"description": "Use hundreds of models from Anthropic, OpenAI, Google, DeepSeek, Qwen and other vendors in GitHub Copilot Chat with one Hubris key, billed in rubles.",
+	"command.manage": "Account and Balance",
+	"config.models": "Model ids to show in the chat model picker, for example `anthropic/claude-sonnet-5`. Leave empty to show every Hubris model that can call tools. The full list is at [hubris.pw/models](https://hubris.pw/models).",
+	"config.baseUrl": "Address of the Hubris API. Change it only if support asks you to.",
+	"command.signIn": "Sign In",
+	"command.setApiKey": "Use API Key",
+	"command.signOut": "Sign Out",
+	"config.showBalance": "Show the Hubris balance in the status bar."
+}

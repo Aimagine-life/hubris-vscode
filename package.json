@@ -1,0 +1,116 @@
+{
+	"name": "hubris-copilot-chat",
+	"publisher": "hubris",
+	"displayName": "Hubris Provider for GitHub Copilot Chat",
+	"description": "%description%",
+	"version": "0.1.0",
+	"icon": "assets/icon.png",
+	"license": "MIT",
+	"homepage": "https://hubris.pw",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Aimagine-life/hubris-vscode"
+	},
+	"bugs": {
+		"url": "https://github.com/Aimagine-life/hubris-vscode/issues"
+	},
+	"engines": {
+		"vscode": "^1.106.0"
+	},
+	"categories": [
+		"AI",
+		"Chat"
+	],
+	"keywords": [
+		"copilot",
+		"byok",
+		"llm",
+		"claude",
+		"gpt",
+		"gemini",
+		"deepseek",
+		"qwen",
+		"openai-compatible",
+		"hubris"
+	],
+	"galleryBanner": {
+		"color": "#0e0d1a",
+		"theme": "dark"
+	},
+	"l10n": "./l10n",
+	"main": "./out/extension.js",
+	"activationEvents": [],
+	"contributes": {
+		"languageModelChatProviders": [
+			{
+				"vendor": "hubris",
+				"displayName": "Hubris",
+				"managementCommand": "hubris.manage"
+			}
+		],
+		"commands": [
+			{
+				"command": "hubris.signIn",
+				"title": "%command.signIn%",
+				"category": "Hubris"
+			},
+			{
+				"command": "hubris.setApiKey",
+				"title": "%command.setApiKey%",
+				"category": "Hubris"
+			},
+			{
+				"command": "hubris.manage",
+				"title": "%command.manage%",
+				"category": "Hubris"
+			},
+			{
+				"command": "hubris.signOut",
+				"title": "%command.signOut%",
+				"category": "Hubris"
+			}
+		],
+		"configuration": {
+			"title": "Hubris",
+			"properties": {
+				"hubris.models": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"default": [],
+					"markdownDescription": "%config.models%"
+				},
+				"hubris.baseUrl": {
+					"type": "string",
+					"default": "https://api.hubris.pw/v1",
+					"markdownDescription": "%config.baseUrl%"
+				},
+				"hubris.showBalance": {
+					"type": "boolean",
+					"default": true,
+					"markdownDescription": "%config.showBalance%"
+				}
+			}
+		}
+	},
+	"scripts": {
+		"build": "esbuild src/extension.ts --bundle --platform=node --target=node20 --format=cjs --external:vscode --outfile=out/extension.js --minify",
+		"typecheck": "tsc --noEmit -p .",
+		"test": "node --import tsx --test test/*.test.ts",
+		"vscode:prepublish": "npm run typecheck && npm test && npm run build",
+		"package": "vsce package --no-dependencies"
+	},
+	"devDependencies": {
+		"@types/node": "^22.20.5",
+		"@types/vscode": "1.106.0",
+		"@vscode/vsce": "^4.1.0",
+		"esbuild": "^0.28.2",
+		"tsx": "^4.23.15",
+		"typescript": "~5.9.3"
+	},
+	"extensionKind": [
+		"ui",
+		"workspace"
+	]
+}

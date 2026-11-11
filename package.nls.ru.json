@@ -1,0 +1,10 @@
+{
+	"description": "Сотни моделей Anthropic, OpenAI, Google, DeepSeek, Qwen и других компаний в GitHub Copilot Chat по одному ключу Hubris, оплата в рублях.",
+	"command.manage": "Аккаунт и баланс",
+	"config.models": "Какие модели показывать в списке моделей чата, например `anthropic/claude-sonnet-5`. Если пусто, показываются все модели Hubris, которые умеют вызывать инструменты. Полный список — на [hubris.pw/models](https://hubris.pw/models).",
+	"config.baseUrl": "Адрес API Hubris. Меняйте, только если об этом попросит поддержка.",
+	"command.signIn": "Войти",
+	"command.setApiKey": "Войти по ключу API",
+	"command.signOut": "Выйти",
+	"config.showBalance": "Показывать баланс Hubris в строке состояния."
+}
