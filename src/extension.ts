@@ -8,6 +8,8 @@ import { HubrisSession } from './session';
 const KEY_PAGE = 'https://hubris.pw/keys';
 const USAGE_PAGE = 'https://hubris.pw/usage';
 const BALANCE_EVERY_MS = 5 * 60 * 1000;
+// Chat: Manage Language Models.
+const MANAGE_MODELS = 'workbench.action.chat.manage';
 
 export function activate(context: vscode.ExtensionContext): void {
 	const version = (context.extension.packageJSON as { version?: string }).version ?? 'unknown';
@@ -88,9 +90,7 @@ async function browserSignIn(session: HubrisSession): Promise<boolean> {
 			},
 		);
 		await session.saveOAuth(tokens);
-		void vscode.window.showInformationMessage(
-			vscode.l10n.t('Hubris is connected. Pick a Hubris model in the chat model picker.'),
-		);
+		offerModelPicker(vscode.l10n.t('Hubris is connected.'));
 		return true;
 	} catch (err) {
 		if (err instanceof OAuthError && err.code === 'cancelled') return false;
@@ -114,8 +114,21 @@ async function askForKey(session: HubrisSession): Promise<boolean> {
 	});
 	if (!value?.trim()) return false;
 	await session.saveKey(value.trim());
-	void vscode.window.showInformationMessage(vscode.l10n.t('Hubris API key saved. Hubris models are now in the chat model picker.'));
+	offerModelPicker(vscode.l10n.t('Hubris API key saved.'));
 	return true;
+}
+
+/** VS Code keeps provider models out of the picker until the user turns them on, so point there. */
+function offerModelPicker(done: string): void {
+	const choose = vscode.l10n.t('Choose models');
+	void vscode.window
+		.showInformationMessage(
+			`${done} ${vscode.l10n.t('Turn on the Hubris models you need in Manage Language Models (the eye icon).')}`,
+			choose,
+		)
+		.then((pick) => {
+			if (pick === choose) void vscode.commands.executeCommand(MANAGE_MODELS);
+		});
 }
 
 async function signOut(session: HubrisSession): Promise<void> {
@@ -131,6 +144,7 @@ async function manage(session: HubrisSession, provider: HubrisChatProvider, stat
 		? [
 				{ label: `$(credit-card) ${vscode.l10n.t('Top up balance')}`, description: status.text(), run: open(TOP_UP_PAGE) },
 				{ label: `$(graph) ${vscode.l10n.t('Usage and spending')}`, run: open(USAGE_PAGE) },
+				{ label: `$(list-selection) ${vscode.l10n.t('Choose models for the chat')}`, run: () => vscode.commands.executeCommand(MANAGE_MODELS) },
 				{ label: `$(refresh) ${vscode.l10n.t('Reload the model list')}`, run: () => provider.refresh() },
 				{ label: '', kind: vscode.QuickPickItemKind.Separator },
 				kind === 'oauth'

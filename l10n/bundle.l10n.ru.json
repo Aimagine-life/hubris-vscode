@@ -18,12 +18,10 @@
 	"Hubris is connected": "Hubris подключён",
 	"You can close this tab and return to VS Code.": "Эту вкладку можно закрыть и вернуться в VS Code.",
 	"Hubris was not connected": "Hubris не подключён",
-	"Hubris is connected. Pick a Hubris model in the chat model picker.": "Hubris подключён. Выберите модель Hubris в списке моделей чата.",
 	"Hubris: sign-in failed. {0}": "Hubris: не удалось войти. {0}",
 	"Hubris API Key": "Ключ API Hubris",
 	"Paste your Hubris API key. You can create one at {0}": "Вставьте ключ API Hubris. Создать ключ можно на {0}",
 	"A Hubris key starts with sk-gw-": "Ключ Hubris начинается с sk-gw-",
-	"Hubris API key saved. Hubris models are now in the chat model picker.": "Ключ API Hubris сохранён. Модели Hubris появились в списке моделей чата.",
 	"Signed out of Hubris.": "Вы вышли из Hubris.",
 	"Top up balance": "Пополнить баланс",
 	"Usage and spending": "Расход",
@@ -35,5 +33,10 @@
 	"Connect Hubris to use its models in the chat": "Подключите Hubris, чтобы пользоваться его моделями в чате",
 	"Hubris: left on this key today. Click for the menu.": "Hubris: столько ещё можно потратить по этому ключу. Нажмите, чтобы открыть меню.",
 	"Hubris balance. Click to top up or manage the connection.": "Баланс Hubris. Нажмите, чтобы пополнить или управлять подключением.",
-	"Hubris: the balance is not available right now. Click for the menu.": "Hubris: баланс сейчас недоступен. Нажмите, чтобы открыть меню."
+	"Hubris: the balance is not available right now. Click for the menu.": "Hubris: баланс сейчас недоступен. Нажмите, чтобы открыть меню.",
+	"Hubris is connected.": "Hubris подключён.",
+	"Hubris API key saved.": "Ключ API Hubris сохранён.",
+	"Choose models": "Выбрать модели",
+	"Turn on the Hubris models you need in Manage Language Models (the eye icon).": "Включите нужные модели Hubris в окне «Управление языковыми моделями» (значок глаза).",
+	"Choose models for the chat": "Выбрать модели для чата"
 }
